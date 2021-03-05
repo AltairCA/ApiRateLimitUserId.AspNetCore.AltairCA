@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageProjectUrl>https://github.com/AltairCA/ipratelimiteraltairca</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/AltairCA/ipratelimiteraltairca</RepositoryUrl>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/AltairCA/ApiRateLimitUserId.AspNetCore.AltairCA</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AltairCA/ApiRateLimitUserId.AspNetCore.AltairCA</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>ApiRateLimitUserId.AspNetCore.AltairCA</PackageId>
     <Authors>Michika Iranga Perera</Authors>
     <Description>Limit API usage rate by client IP address</Description>

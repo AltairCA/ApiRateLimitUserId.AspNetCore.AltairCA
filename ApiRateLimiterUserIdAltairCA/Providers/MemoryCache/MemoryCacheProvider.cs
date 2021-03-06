@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace APIRateLimiterUserId.AspNetCore.AltairCA.Providers
 {
-    public class MemoryCacheProvider: APIRateLimiterUserIdStorageProvider
+    internal class MemoryCacheProvider: IAPIRateLimiterUserIdStorageProvider
     {
         private IMemoryCache _cache;
         private APIRateLimiterUserIdOptions settings;

@@ -8,12 +8,29 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Helpers
 {
     public static class StartupHelper
     {
-        public static IServiceCollection AddAPIRateLimiterUserId(this IServiceCollection service,Action<APIRateLimiterUserIdOptions> options)
+        public static IApiRateLimiterUserIdServiceRegistration AddAPIRateLimiterUserId(this IServiceCollection service,Action<APIRateLimiterUserIdOptions> options)
         {
             service.Configure(options);
             service.AddScoped<APIRateLimiterUserIdHttpFilterService, ApiRateLimiterUserIdHttpFilterService>();
             service.AddScoped<APIRateLimiterUserIdHttpService, ApiRateLimiterUserIdHttpService>();
-            return service;
+            var opt = new APIRateLimiterUserIdOptions();
+            options(opt);
+            return new ApiRateLimiterUserIdServiceRegistration()
+            {
+                Options = opt,
+                ServiceCollection = service
+            };
         }
+    }
+
+    public interface IApiRateLimiterUserIdServiceRegistration
+    {
+        
+    }
+
+    internal class ApiRateLimiterUserIdServiceRegistration:IApiRateLimiterUserIdServiceRegistration
+    {
+        public IServiceCollection ServiceCollection { get; set; }
+        public APIRateLimiterUserIdOptions Options { get; set; }
     }
 }

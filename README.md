@@ -32,7 +32,6 @@ public void ConfigureServices(IServiceCollection services)
   services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
   services.AddMemoryCache();
   services.AddHttpContextAccessor();
-  services.AddScoped<IIpRateLimitStorageProvider, MemoryCacheProvider>();
   services.AddAPIRateLimiterUserId(options =>
   {
       options.GlobalRateLimit = 10;
@@ -42,8 +41,10 @@ public void ConfigureServices(IServiceCollection services)
           "UserID"
       };
       options.UserIdClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
-  });
+  }).AddMemoryCache();
 ```
+
+
 
 Default options for ApiRateLimitUserId
 
@@ -62,6 +63,24 @@ public class APIRateLimiterUserIdOptions
 ```
 `{0}` is max limit, `{1}` is period in seconds, `{2}` when the quota get resets in seconds
 
+### Redis Provider
+
+Above example uses memerycache as the provider for the data, but I have implemented a redis storage provider as well
+
+Refer [here](https://github.com/ServiceStack/ServiceStack.Redis) to lean more about Redis Client, that I have used
+
+```c#
+services.AddAPIRateLimiterUserId(options =>
+                {
+                    options.GlobalRateLimit = 10;
+                    options.GlobalSpan = TimeSpan.FromMinutes(30);
+                    options.ExcludeList = new List<string>
+                    {
+                        "127.0.0.1", "192.168.0.0/24"
+                    };
+                    options.UserIdClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+                }).AddRedisCacheProvider(() => "127.0.0.1:6379");
+```
 
 ### Using it in a controller
 

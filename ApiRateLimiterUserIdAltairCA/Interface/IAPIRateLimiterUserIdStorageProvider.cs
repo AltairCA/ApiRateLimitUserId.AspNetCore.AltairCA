@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace APIRateLimiterUserId.AspNetCore.AltairCA.Interface
 {
-    public interface APIRateLimiterUserIdStorageProvider
+    public interface IAPIRateLimiterUserIdStorageProvider
     {
         Task<T> GetAsync<T>(string key);
         Task SetAsync(string key, object obj, TimeSpan span);

@@ -41,7 +41,6 @@ namespace ApiRateLimiterUserIdExample
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddMemoryCache();
             services.AddHttpContextAccessor();
-            services.AddScoped<APIRateLimiterUserIdStorageProvider, MemoryCacheProvider>();
             services.AddAPIRateLimiterUserId(options =>
             {
                 options.GlobalRateLimit = 10;
@@ -50,7 +49,7 @@ namespace ApiRateLimiterUserIdExample
                 {
                     "UserID"
                 };
-            });
+            }).AddMemoryCache();
             services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

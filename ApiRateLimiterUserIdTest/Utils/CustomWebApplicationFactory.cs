@@ -34,7 +34,6 @@ namespace ApiRateLimiterUserIdTest.Utils
                 services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
                 services.AddMemoryCache();
                 services.AddHttpContextAccessor();
-                services.AddScoped<APIRateLimiterUserIdStorageProvider, MemoryCacheProvider>();
                 services.AddAPIRateLimiterUserId(options =>
                 {
                     options.GlobalRateLimit = 10;
@@ -44,7 +43,7 @@ namespace ApiRateLimiterUserIdTest.Utils
                         "127.0.0.1", "192.168.0.0/24"
                     };
                     options.UserIdClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
-                });
+                }).AddMemoryCache();;
                 services.AddAuthentication(o =>
                 {
                     o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

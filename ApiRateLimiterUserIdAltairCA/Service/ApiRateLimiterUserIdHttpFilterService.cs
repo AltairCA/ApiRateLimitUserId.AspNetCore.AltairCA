@@ -17,10 +17,10 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
 {
     internal class ApiRateLimiterUserIdHttpFilterService: APIRateLimiterUserIdHttpFilterService
     {
-        private readonly APIRateLimiterUserIdStorageProvider _provider;
+        private readonly IAPIRateLimiterUserIdStorageProvider _provider;
         private readonly IHttpContextAccessor _httpContext;
         private APIRateLimiterUserIdOptions _settings;
-        public ApiRateLimiterUserIdHttpFilterService(APIRateLimiterUserIdStorageProvider iipRateLimiterUserIdStorageProvider, IHttpContextAccessor httpContext,IOptions<APIRateLimiterUserIdOptions> settings)
+        public ApiRateLimiterUserIdHttpFilterService(IAPIRateLimiterUserIdStorageProvider iipRateLimiterUserIdStorageProvider, IHttpContextAccessor httpContext,IOptions<APIRateLimiterUserIdOptions> settings)
         {
             _provider = iipRateLimiterUserIdStorageProvider;
             _httpContext = httpContext;

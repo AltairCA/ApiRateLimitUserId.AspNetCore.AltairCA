@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace APIRateLimiterUserId.AspNetCore.AltairCA.Interface
 {
-    public interface APIRateLimiterUserIdHttpFilterService
+    internal interface IAPIRateLimiterUserIdHttpFilterService
     {
         Task<Tuple<bool, APIRateLimiterUserIdServiceResponse>> Validate(TimeSpan span, int limit, string groupKey);
         Task<Tuple<bool, APIRateLimiterUserIdServiceResponse>> Validate();

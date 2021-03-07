@@ -11,8 +11,8 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Helpers
         public static IApiRateLimiterUserIdServiceRegistration AddAPIRateLimiterUserId(this IServiceCollection service,Action<APIRateLimiterUserIdOptions> options)
         {
             service.Configure(options);
-            service.AddScoped<APIRateLimiterUserIdHttpFilterService, ApiRateLimiterUserIdHttpFilterService>();
-            service.AddScoped<APIRateLimiterUserIdHttpService, ApiRateLimiterUserIdHttpService>();
+            service.AddScoped<IAPIRateLimiterUserIdHttpFilterService, IapiRateLimiterUserIdHttpFilterService>();
+            service.AddScoped<IAPIRateLimiterUserIdHttpService, IapiRateLimiterUserIdHttpService>();
             var opt = new APIRateLimiterUserIdOptions();
             options(opt);
             return new ApiRateLimiterUserIdServiceRegistration()

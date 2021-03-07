@@ -17,11 +17,11 @@ namespace ApiRateLimiterUserIdExample.Controllers
     [APIRateLimiterUserIdHttp]
     public class ValuesController : ControllerBase
     {
-        private readonly APIRateLimiterUserIdHttpService _apiRateLimiterUserIdHttpService;
+        private readonly IAPIRateLimiterUserIdHttpService _iapiRateLimiterUserIdHttpService;
         private readonly IMemoryCache _memoryCache;
-        public ValuesController(APIRateLimiterUserIdHttpService apiRateLimiterUserIdHttpService, IMemoryCache memoryCache)
+        public ValuesController(IAPIRateLimiterUserIdHttpService iapiRateLimiterUserIdHttpService, IMemoryCache memoryCache)
         {
-            _apiRateLimiterUserIdHttpService = apiRateLimiterUserIdHttpService;
+            _iapiRateLimiterUserIdHttpService = iapiRateLimiterUserIdHttpService;
             _memoryCache = memoryCache;
         }
 
@@ -43,7 +43,7 @@ namespace ApiRateLimiterUserIdExample.Controllers
         [HttpGet("clearlimit")]
         public void RemoveLimit()
         {
-            _apiRateLimiterUserIdHttpService.ClearLimit("group1");
+            _iapiRateLimiterUserIdHttpService.ClearLimitGroup("group1");
         }
         // POST api/values
         [HttpPost]
@@ -60,8 +60,29 @@ namespace ApiRateLimiterUserIdExample.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete()
         {
-            await _apiRateLimiterUserIdHttpService.ClearLimit();
+            await _iapiRateLimiterUserIdHttpService.ClearLimit();
             return Ok();
+        }
+
+        [HttpGet("setlimit/{limit}")]
+        public async Task<IActionResult> SetLimit(int limit)
+        {
+            await _iapiRateLimiterUserIdHttpService.SetLimitGroup("0587c92a-67c4-4c2d-86e9-6d4651eac871", "group1", limit);
+            return Ok();
+        }
+
+        [HttpGet("getreaminiglimit")]
+        public async Task<IActionResult> GetRemainingLimit()
+        {
+            int remainig = await _iapiRateLimiterUserIdHttpService.GetRemainingLimitGroup("0587c92a-67c4-4c2d-86e9-6d4651eac871", "group1");
+            return Ok(remainig);
+        }
+
+        [HttpGet("GetCurrentCountGroup")]
+        public async Task<IActionResult> GetCurrentCountGroup()
+        {
+            int count = await _iapiRateLimiterUserIdHttpService.GetCurrentCountGroup("0587c92a-67c4-4c2d-86e9-6d4651eac871", "group1");
+            return Ok(count);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            APIRateLimiterUserIdHttpFilterService service = context.HttpContext.RequestServices.GetService<APIRateLimiterUserIdHttpFilterService>();
+            IAPIRateLimiterUserIdHttpFilterService service = context.HttpContext.RequestServices.GetService<IAPIRateLimiterUserIdHttpFilterService>();
             var settings = context.HttpContext.RequestServices.GetService<IOptions<APIRateLimiterUserIdOptions>>()
                 .Value;
             Tuple<bool, APIRateLimiterUserIdServiceResponse> res = null;

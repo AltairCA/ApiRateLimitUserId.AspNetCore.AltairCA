@@ -15,12 +15,12 @@ using Newtonsoft.Json;
 
 namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
 {
-    internal class ApiRateLimiterUserIdHttpFilterService: APIRateLimiterUserIdHttpFilterService
+    internal class IapiRateLimiterUserIdHttpFilterService: IAPIRateLimiterUserIdHttpFilterService
     {
         private readonly IAPIRateLimiterUserIdStorageProvider _provider;
         private readonly IHttpContextAccessor _httpContext;
         private APIRateLimiterUserIdOptions _settings;
-        public ApiRateLimiterUserIdHttpFilterService(IAPIRateLimiterUserIdStorageProvider iipRateLimiterUserIdStorageProvider, IHttpContextAccessor httpContext,IOptions<APIRateLimiterUserIdOptions> settings)
+        public IapiRateLimiterUserIdHttpFilterService(IAPIRateLimiterUserIdStorageProvider iipRateLimiterUserIdStorageProvider, IHttpContextAccessor httpContext,IOptions<APIRateLimiterUserIdOptions> settings)
         {
             _provider = iipRateLimiterUserIdStorageProvider;
             _httpContext = httpContext;
@@ -64,8 +64,8 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
             {
                 model = new StoreModel
                 {
-                    PathEntries = new Dictionary<string, HashSet<long>>(),
-                    GroupEntries = new Dictionary<string, HashSet<long>>(),
+                    PathEntries = new Dictionary<string, StoreEntries>(),
+                    GroupEntries = new Dictionary<string, StoreEntries>(),
                     ClientId = clientId
                 };
             }
@@ -73,46 +73,48 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
             var keyOfPathOrGroup = CommonUtils.GetKey(isGroup ? groupKey : path);
 
             long spanedOutNow = now.Ticks - span.Ticks;
-            HashSet<long> Entries = new HashSet<long>();
+            StoreEntries storeentry = new StoreEntries();
             if (isGroup)
             {
-                model.GroupEntries.TryGetValue(keyOfPathOrGroup, out Entries);
+                model.GroupEntries.TryGetValue(keyOfPathOrGroup, out storeentry);
             }
             else
             {
-                model.PathEntries.TryGetValue(keyOfPathOrGroup, out Entries);
+                model.PathEntries.TryGetValue(keyOfPathOrGroup, out storeentry);
             }
-            if (Entries == null)
+            if (storeentry == null)
             {
-                Entries = new HashSet<long>();
+                storeentry = new StoreEntries();
             }
             
-            await Task.Run(() => { Entries.RemoveWhere(x => x < spanedOutNow); });
+            await Task.Run(() => { storeentry.Entries.RemoveWhere(x => x < spanedOutNow); });
             DateTime firstDate = now.Add(span);
-            if (Entries.Any())
+            if (storeentry.Entries.Any())
             {
-                firstDate = new DateTime(Entries.First());
+                firstDate = new DateTime(storeentry.Entries.First());
                 firstDate = firstDate.Add(span);
             }
-            if (Entries.Count >= limit)
+
+            limit = storeentry.LimitSetByAdmin ?? limit;
+            if (storeentry.Entries.Count >= limit)
             {
                
                 return new Tuple<bool, APIRateLimiterUserIdServiceResponse>(false,new APIRateLimiterUserIdServiceResponse{ResetIn = firstDate,MaxLimit = limit,Period = span.TotalSeconds });
             }
-            Entries.Add(now.Ticks);
+            storeentry.Entries.Add(now.Ticks);
             if (isGroup)
             {
                 model.GroupEntries.Remove(keyOfPathOrGroup);
-                model.GroupEntries.Add(keyOfPathOrGroup,Entries);
+                model.GroupEntries.Add(keyOfPathOrGroup,storeentry);
             }
             else
             {
                 model.PathEntries.Remove(keyOfPathOrGroup);
-                model.PathEntries.Add(keyOfPathOrGroup,Entries);
+                model.PathEntries.Add(keyOfPathOrGroup,storeentry);
             }
             
             await _provider.SetAsync(key, model);
-            return new Tuple<bool, APIRateLimiterUserIdServiceResponse>(true, new APIRateLimiterUserIdServiceResponse{AvaliableLimit = limit  - Entries.Count, ResetIn = firstDate, Period = span.TotalSeconds });
+            return new Tuple<bool, APIRateLimiterUserIdServiceResponse>(true, new APIRateLimiterUserIdServiceResponse{AvaliableLimit = limit  - storeentry.Entries.Count, ResetIn = firstDate, Period = span.TotalSeconds });
         }
 
         public void SetHeaderAndBodyIfLimitReached(ActionExecutingContext context, APIRateLimiterUserIdServiceResponse response)

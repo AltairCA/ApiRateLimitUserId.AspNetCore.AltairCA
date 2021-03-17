@@ -28,9 +28,13 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Helpers
         
     }
 
-    internal class ApiRateLimiterUserIdServiceRegistration:IApiRateLimiterUserIdServiceRegistration
+    internal class ApiRateLimiterUserIdServiceRegistration:IApiRateLimiterUserIdServiceRegistration,IApiRateLimiterUserIdServiceRegistrationBackupProvider
     {
         public IServiceCollection ServiceCollection { get; set; }
         public APIRateLimiterUserIdOptions Options { get; set; }
+    }
+    public interface IApiRateLimiterUserIdServiceRegistrationBackupProvider
+    {
+        
     }
 }

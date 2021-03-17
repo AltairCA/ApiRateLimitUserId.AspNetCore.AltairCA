@@ -4,9 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using APIRateLimiterUserId.AspNetCore.AltairCA.BackupProvider.MongoDbBackupProvider;
 using APIRateLimiterUserId.AspNetCore.AltairCA.Helpers;
 using APIRateLimiterUserId.AspNetCore.AltairCA.Interface;
 using APIRateLimiterUserId.AspNetCore.AltairCA.Providers;
+using APIRateLimiterUserId.AspNetCore.AltairCA.Providers.RedisWithBackup;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -41,6 +43,7 @@ namespace ApiRateLimiterUserIdExample
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddMemoryCache();
             services.AddHttpContextAccessor();
+            
             services.AddAPIRateLimiterUserId(options =>
             {
                 options.GlobalRateLimit = 10;
@@ -49,7 +52,12 @@ namespace ApiRateLimiterUserIdExample
                 {
                     "UserID"
                 };
-            }).AddMemoryCache();
+            }).AddRedisCacheProvider(() => "127.0.0.1:6379").AddMongoBackupProvider(options =>
+            {
+                options.MongoCollectionName = "UserIdRecords";
+                options.MongoDbName = "UserIdLimit";
+                options.MongoConnectionString = "mongodb://localhost:27017";
+            });;
             services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

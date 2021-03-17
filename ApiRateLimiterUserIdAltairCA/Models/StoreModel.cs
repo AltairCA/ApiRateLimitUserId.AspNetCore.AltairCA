@@ -16,7 +16,7 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Models
 
     internal class StoreEntries
     {
-        public int? LimitSetByAdmin { get; set; }
+        public long? LimitSetByAdmin { get; set; }
         public HashSet<long> Entries { get; set; } = new();
     }
 }

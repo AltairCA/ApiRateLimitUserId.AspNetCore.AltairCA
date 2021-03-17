@@ -33,7 +33,7 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
         {
             return await Validate(_settings.GlobalSpan, _settings.GlobalRateLimit, null);
         }
-        public async Task<Tuple<bool, APIRateLimiterUserIdServiceResponse>> Validate(TimeSpan span, int limit, string groupKey)
+        public async Task<Tuple<bool, APIRateLimiterUserIdServiceResponse>> Validate(TimeSpan span, long limit, string groupKey)
         {
             string clientId = CommonUtils.GetUserId(_settings,_httpContext);
             if (string.IsNullOrWhiteSpace(clientId))

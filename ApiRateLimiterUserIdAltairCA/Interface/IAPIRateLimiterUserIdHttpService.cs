@@ -31,7 +31,7 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Interface
         /// <param name="group"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        Task SetLimitGroup(string userId, string group, int i);
+        Task SetLimitGroup(string userId, string group, long i);
         /// <summary>
         /// Get Remaining limit count on userid and group. if you haven't specifically set a limit it will throw a exception
         /// </summary>
@@ -39,13 +39,13 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Interface
         /// <param name="userId"></param>
         /// <param name="group"></param>
         /// <returns></returns>
-        Task<int> GetRemainingLimitGroup(string userId, string group);
+        Task<long> GetRemainingLimitGroup(string userId, string group);
         /// <summary>
         /// Get Current Request Count for the group
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="group"></param>
         /// <returns></returns>
-        Task<int> GetCurrentCountGroup(string userId, string group);
+        Task<long> GetCurrentCountGroup(string userId, string group);
     }
 }

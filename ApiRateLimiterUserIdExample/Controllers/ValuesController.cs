@@ -74,14 +74,14 @@ namespace ApiRateLimiterUserIdExample.Controllers
         [HttpGet("getreaminiglimit")]
         public async Task<IActionResult> GetRemainingLimit()
         {
-            int remainig = await _iapiRateLimiterUserIdHttpService.GetRemainingLimitGroup("0587c92a-67c4-4c2d-86e9-6d4651eac871", "group1");
+            long remainig = await _iapiRateLimiterUserIdHttpService.GetRemainingLimitGroup("0587c92a-67c4-4c2d-86e9-6d4651eac871", "group1");
             return Ok(remainig);
         }
 
         [HttpGet("GetCurrentCountGroup")]
         public async Task<IActionResult> GetCurrentCountGroup()
         {
-            int count = await _iapiRateLimiterUserIdHttpService.GetCurrentCountGroup("0587c92a-67c4-4c2d-86e9-6d4651eac871", "group1");
+            long count = await _iapiRateLimiterUserIdHttpService.GetCurrentCountGroup("0587c92a-67c4-4c2d-86e9-6d4651eac871", "group1");
             return Ok(count);
         }
     }

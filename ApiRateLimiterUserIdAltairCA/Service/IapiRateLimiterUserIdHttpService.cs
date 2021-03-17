@@ -44,12 +44,12 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
             await ClearLimitForUserAndGroup(userId, groupKey);
         }
 
-        public async Task SetLimitGroup(string userId, string group, int i)
+        public async Task SetLimitGroup(string userId, string group, long i)
         {
             await SetLimitForUserAndGroup(userId, group, i);
         }
         
-        public async Task<int> GetRemainingLimitGroup(string userId, string group)
+        public async Task<long> GetRemainingLimitGroup(string userId, string group)
         {
             var key = CommonUtils.GetKey(userId);
             var model = await GetModelByUserId(userId);
@@ -65,7 +65,7 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
             return entry.LimitSetByAdmin.Value;
         }
 
-        public async Task<int> GetCurrentCountGroup(string userId, string @group)
+        public async Task<long> GetCurrentCountGroup(string userId, string @group)
         {
             var key = CommonUtils.GetKey(userId);
             var model = await GetModelByUserId(userId);
@@ -80,7 +80,7 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
             return entry.Entries.Count;
         }
 
-        private async Task SetLimitForUserAndGroup(string userId, string group, int limit)
+        private async Task SetLimitForUserAndGroup(string userId, string group, long limit)
         {
             var key = CommonUtils.GetKey(userId);
             var model = await GetModelByUserId(userId);

@@ -26,6 +26,13 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA
             _limit = limit;
             _groupKey = groupkey;
         }
+
+        public APIRateLimiterUserIdHttpAttribute(string groupKey)
+        {
+            _span = TimeSpan.MinValue;
+            _limit = int.MinValue;
+            groupKey = groupKey;
+        }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             IAPIRateLimiterUserIdHttpFilterService service = context.HttpContext.RequestServices.GetService<IAPIRateLimiterUserIdHttpFilterService>();

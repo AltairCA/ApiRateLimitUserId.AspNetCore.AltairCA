@@ -31,7 +31,7 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA
         {
             _span = TimeSpan.MinValue;
             _limit = int.MinValue;
-            groupKey = groupKey;
+            _groupKey = groupKey;
         }
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {

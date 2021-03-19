@@ -13,7 +13,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <LangVersion>latest</LangVersion>
     <Copyright>© Michika Iranga Perera</Copyright>
-    <PackageVersion>1.0.3.3</PackageVersion>
+    <PackageVersion>1.0.3.4</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

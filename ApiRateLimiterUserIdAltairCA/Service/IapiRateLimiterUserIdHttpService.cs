@@ -32,7 +32,12 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
             
             await _provider.RemoveAsync(key);
         }
-
+        public async Task RemoveUserRecord(string clientId)
+        {
+            string path = CommonUtils.GetPath(_httpContext);
+            string key = CommonUtils.GetKey(clientId);
+            await _provider.RemoveAsync(key);
+        }
         public async Task ClearLimitGroup([Required(AllowEmptyStrings = false)] string groupKey)
         {
             string userId = CommonUtils.GetUserId(_settings, _httpContext);

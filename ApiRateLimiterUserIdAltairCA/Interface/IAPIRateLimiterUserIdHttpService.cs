@@ -47,5 +47,11 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Interface
         /// <param name="group"></param>
         /// <returns></returns>
         Task<long> GetCurrentCountGroup(string userId, string group);
+/// <summary>
+/// Completely remove user records from the system
+/// </summary>
+/// <param name="clientId"></param>
+/// <returns></returns>
+        Task RemoveUserRecord(string clientId);
     }
 }

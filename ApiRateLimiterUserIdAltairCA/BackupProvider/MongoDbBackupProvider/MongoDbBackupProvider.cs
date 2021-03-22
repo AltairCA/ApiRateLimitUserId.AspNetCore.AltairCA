@@ -95,6 +95,12 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.BackupProvider.MongoDbBackupP
 
         public async Task RemoveAsync(string key)
         {
+            lock (OnQueueInsert)
+            {
+                var found = OnQueueInsert.ContainsKey(key);
+                if(found)
+                    OnQueueInsert.Remove(key);
+            }
             await _collection.DeleteOneAsync(x => x.Id == key);
         }
         

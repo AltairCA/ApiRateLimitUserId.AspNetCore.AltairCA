@@ -116,7 +116,11 @@ namespace APIRateLimiterUserId.AspNetCore.AltairCA.Service
                 if (model.GroupEntries != null)
                 {
                     var keyOfGroup = CommonUtils.GetKey(groupkey);
-                    model.GroupEntries.Remove(keyOfGroup);
+                    if (model.GroupEntries.TryGetValue(keyOfGroup, out StoreEntries groupvals))
+                    {
+                        groupvals.Entries = new HashSet<long>();
+                    }
+                    
                 }
             }
             await _provider.SetAsync(key,model);
